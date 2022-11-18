@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yokeshinzone/pages/home/tabs/DummyTab.dart';
-import 'package:yokeshinzone/pages/home/tabs/now_loading_tab.dart';
-import 'package:yokeshinzone/pages/home/tabs/popular_tab.dart';
-import 'package:yokeshinzone/pages/home/tabs/top_rated_tab.dart';
-import 'package:yokeshinzone/pages/home/tabs/upcoming_tab.dart';
+import 'package:yokeshinzone/background/bloc/movie_list_bloc.dart';
+import 'package:yokeshinzone/pages/home/widgets/home_tab_layout.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,6 +10,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+
+
+  @override
+  void initState() {
+    super.initState();
+    moviesBloc.getNowPlayingMovies();
+    moviesBloc.getPopularMovies();
+    moviesBloc.getTopRatedMovies();
+    moviesBloc.getUpcomingMovies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +73,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
             ];
           },
-          body: const TabBarView(
+          body: TabBarView(
             children: [
-              HomePopularTab(),
-              HomeTopRatedTab(),
-              HomeNowPlayingTab(),
-              HomeUpcomingTab(),
+              HomeTabLayout(stream: moviesBloc.popularSubject.stream),
+              HomeTabLayout(stream: moviesBloc.topSubject.stream),
+              HomeTabLayout(stream: moviesBloc.playingSubject.stream),
+              HomeTabLayout(stream: moviesBloc.upcomingSubject.stream),
             ],
           ),
         ),

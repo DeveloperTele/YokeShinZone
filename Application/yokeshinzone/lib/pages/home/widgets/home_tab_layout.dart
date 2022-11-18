@@ -1,34 +1,25 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:yokeshinzone/background/bloc/movie_list_bloc.dart';
 import 'package:yokeshinzone/background/models/home/movie_model.dart';
 import 'package:yokeshinzone/pages/home/widgets/movie_cell.dart';
 import 'package:yokeshinzone/pages/home/widgets/movie_error_page.dart';
 import 'package:yokeshinzone/pages/home/widgets/movie_loading_page.dart';
 
-class HomeNowPlayingTab extends StatefulWidget {
-  const HomeNowPlayingTab({Key? key}) : super(key: key);
-
-  @override
-  State<HomeNowPlayingTab> createState() => _HomeNowPlayingTabState();
-}
-
-class _HomeNowPlayingTabState extends State<HomeNowPlayingTab> {
-
-  @override
-  void initState() {
-    super.initState();
-    moviesBloc.getNowPlayingMovies();
-  }
+class HomeTabLayout extends StatelessWidget {
+  final Stream<MovieModel> stream;
+  const HomeTabLayout({
+    Key? key,
+    required this.stream
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<MovieModel>(
-      stream: moviesBloc.playingSubject.stream,
+      stream: stream,
       builder: (context, AsyncSnapshot<MovieModel> snapshot) {
         if (snapshot.hasData) {
           if (kDebugMode) {
-            print('HomeNowPlayingTab ====> ${snapshot.data!.movies!.length}');
+            print('HomeUpcomingTab ====> ${snapshot.data!.movies!.length}');
           }
           return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

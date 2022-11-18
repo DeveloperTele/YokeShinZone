@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:yokeshinzone/background/constants/app_constants.dart';
+import 'package:yokeshinzone/background/models/detail/movie_detail_model.dart';
 import 'package:yokeshinzone/background/models/home/movie_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,7 +9,7 @@ class MovieRepository {
 
   Future<MovieModel> getPopularMovies() async {
     try {
-      http.Response response = await http.get(Uri.parse('$baseUrl/movie/popular?$apiKey'));
+      http.Response response = await http.get(Uri.parse('$baseUrl/popular?$apiKey'));
       var data = json.decode(response.body);
       return MovieModel.fromJson(data);
     } catch (error) {
@@ -23,7 +24,7 @@ class MovieRepository {
 
   Future<MovieModel> getTopRatedMovies() async {
     try {
-      http.Response response = await http.get(Uri.parse('$baseUrl/movie/top_rated?$apiKey'));
+      http.Response response = await http.get(Uri.parse('$baseUrl/top_rated?$apiKey'));
       var data = json.decode(response.body);
       return MovieModel.fromJson(data);
     } catch (error) {
@@ -38,7 +39,7 @@ class MovieRepository {
 
   Future<MovieModel> getPlayingMovies() async {
     try {
-      http.Response response = await http.get(Uri.parse('$baseUrl/movie/now_playing?$apiKey'));
+      http.Response response = await http.get(Uri.parse('$baseUrl/now_playing?$apiKey'));
       var data = json.decode(response.body);
       return MovieModel.fromJson(data);
     } catch (error) {
@@ -53,7 +54,7 @@ class MovieRepository {
 
   Future<MovieModel> getUpcomingMovies() async {
     try {
-      http.Response response = await http.get(Uri.parse('$baseUrl/movie/upcoming?$apiKey'));
+      http.Response response = await http.get(Uri.parse('$baseUrl/upcoming?$apiKey'));
       var data = json.decode(response.body);
       return MovieModel.fromJson(data);
     } catch (error) {
@@ -63,6 +64,16 @@ class MovieRepository {
         print(error.toString());
       }
       return MovieModel.withError("$error");
+    }
+  }
+
+  Future<MovieDetailModel> getMovieDetail(int id) async {
+    try {
+      http.Response response = await http.get(Uri.parse('$baseUrl/$id?$apiKey'));
+      var data = json.decode(response.body);
+      return MovieDetailModel.fromJson(data);
+    } catch (error) {
+      throw Exception(error);
     }
   }
 }

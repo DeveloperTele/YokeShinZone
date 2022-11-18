@@ -39,7 +39,7 @@ class Movie {
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
-  var id;
+  int? id;
   String? originalLanguage;
   String? originalTitle;
   String? overview;
